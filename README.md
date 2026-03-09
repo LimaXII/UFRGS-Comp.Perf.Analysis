@@ -38,15 +38,15 @@ Documents → Translation → Embeddings → Vector DB → Query → Retrieval �
 
 ### Embedding Model
 
-* Unknown (test multilingual-e5-large)
+* multilingual-e5-large
 
 ### Vector Database
 
-* Unknown (Maybe FAISS?)
+* FAISS
 
 ### LLM (for RAG agent)
 
-* Unknown (test Qwen2.5 7B)
+* Qwen2.5 7B
 
 ---
 
@@ -75,6 +75,8 @@ scripts/
 results/
   metrics.csv
   plots/
+
+tests/
 ```
 
 ---

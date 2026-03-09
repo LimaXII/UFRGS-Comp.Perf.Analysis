@@ -1,0 +1,28 @@
+[project]
+name = "ufrgs-comp-perf-analysis"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "LimaXII",email = "luccasdasilvalima@hotmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "sentence-transformers (>=5.2.3,<6.0.0)",
+    "pypdf (>=6.8.0,<7.0.0)",
+    "reportlab (>=4.4.10,<5.0.0)",
+    "ollama (>=0.6.1,<0.7.0)",
+    "pandas (>=3.0.1,<4.0.0)",
+    "matplotlib (>=3.10.8,<4.0.0)",
+    "faiss-cpu (>=1.13.2,<2.0.0)"
+]
+
+[tool.poetry]
+packages = [{include = "ufrgs_comp"}]
+
+[tool.poetry.dependencies]
+python = ">=3.13,<3.15"
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
