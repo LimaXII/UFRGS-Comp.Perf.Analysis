@@ -43,7 +43,7 @@ Each metric below is measured **per language** (for the same documents and queri
 
 | Metric | Description | Recording / calculation |
 |--------|-------------|-------------------------|
-| **Embedding generation time** | Time to encode one or a batch of texts (documents) with the chosen model. | Measure with a high-resolution timer around the encode call; report mean and, if relevant, standard deviation over repeated runs. Unit: seconds (or ms). |
+| **Embedding generation time** | Time to encode each document with the chosen model. | Measure with a high-resolution timer around the encode call; report mean and, if relevant, standard deviation over repeated runs. Unit: seconds (or ms). |
 | **Retrieval latency** | Time from query embedding to returning top-*k* document IDs from the FAISS index. | Timer around the index search call. Report mean (and dispersion) over the evaluation query set. Unit: seconds (or ms). |
 | **Memory usage** | RAM and GPU consumed by the embedding model, FAISS index, and/or full RAG process. | Use OS or runtime tools to sample memory before/after loading the model and index and during runs. Unit: MB. |
 
