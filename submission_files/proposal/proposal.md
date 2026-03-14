@@ -4,12 +4,9 @@
 
 **Computational object:** A **Retrieval-Augmented Generation (RAG)** system evaluated in a multilingual setting. The system comprises:
 
-- **Document base:** A fixed set of base documents in PDF format, used as the sole knowledge source for retrieval. The corpus is designed to cover a range of document sizes:
-  - **5 small PDFs:** 1 to 3 pages each.
-  - **3 medium PDFs:** 4 to 10 pages each.
-  - **1 large PDF:** approximately 20 pages.
+- **Document base:** A fixed set of base documents in PDF format (10 documents), used as the sole knowledge source for retrieval.
   
-  The same **9 documents** (same content, same structure) are translated into **20 different languages** and indexed; retrieval and RAG experiments are run on this multilingual corpus so that the impact of language on embedding quality, retrieval performance, and answer quality can be compared under controlled conditions.
+  The same **10 documents** (same content, same structure) are translated into **20 different languages** and indexed; retrieval and RAG experiments are run on this multilingual corpus so that the impact of language on embedding quality, retrieval performance, and answer quality can be compared under controlled conditions.
 - **Embedding model:** `intfloat/multilingual-e5-large`, used to encode documents and queries into a common vector space.
 - **Vector store:** FAISS (Facebook AI Similarity Search) index storing embeddings with metadata (document ID, language).
 - **Retrieval:** Top-*k* nearest-neighbour search in the FAISS index given a query embedding.

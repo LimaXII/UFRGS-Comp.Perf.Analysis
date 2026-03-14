@@ -9,7 +9,7 @@ from reportlab.lib.units import cm
 from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer
 from pypdf import PdfReader
 
-pdf_path: str = "base_docs/test_doc.pdf"
+pdf_path: str = "tests/test_doc.pdf"
 
 text_blocks: list[str] = [
     "O TESTE DO LUCCAS é um jogo de aventura e desafios onde o protagonista "
