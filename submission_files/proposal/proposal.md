@@ -13,7 +13,8 @@
 - **Embedding model:** `intfloat/multilingual-e5-large`, used to encode documents and queries into a common vector space.
 - **Vector store:** FAISS (Facebook AI Similarity Search) index storing embeddings with metadata (document ID, language).
 - **Retrieval:** Top-*k* nearest-neighbour search in the FAISS index given a query embedding.
-- **LLM:** Qwen2.5 7B (via Ollama), which receives the retrieved context and the user query to produce the final answer.
+- **Chat LLM:** Qwen2.5 7B (via Ollama), which receives the retrieved context and the user query to produce the final answer.
+- **Translator LLM:** Gemini 1.5 Pro.
 
 **Pipeline:** Documents → Translation → Embeddings → Vector index → Query → Retrieval → LLM response.
 
@@ -31,13 +32,6 @@
 
 - **Hardware:** Intel i5-12400F (CPU), NVIDIA GeForce RTX 4060 (GPU), 32 GB RAM, 1 TB NVMe SSD (Kingston NV2).
 - **Execution:** All models and experiments run **locally** (no external APIs).
-
-**Tools:**
-
-- **Embeddings:** SentenceTransformers (`intfloat/multilingual-e5-large`).
-- **Vector index:** FAISS (e.g. `IndexFlatL2` or equivalent).
-- **LLM:** Qwen2.5 7B via Ollama.
-- **Evaluation:** Custom scripts for retrieval and RAG runs; results stored in structured form for later analysis and plots.
 
 ---
 
@@ -60,16 +54,10 @@ Each metric below is measured **per language** (for the same documents and queri
 | **Embedding dimensionality** | Size of each embedding vector. | Read from the model/output shape (e.g. `embedding.shape[1]`). Unit: dimension count. |
 | **Storage size** | Disk space used by the FAISS index and any serialised embeddings or metadata. | Measure file size(s) of the index and related files. Unit: KB or MB. |
 
-### 3.3 Retrieval quality
+### 3.3 RAG answer quality
 
-| Metric | Description | Recording / calculation |
-|--------|-------------|-------------------------|
-| **Relevance (retrieval)** | Whether the retrieved documents are relevant to the query. | For a defined set of queries (~20) with known relevant document(s), record which document(s) are in top-*k*; evaluate relevance manually (e.g. binary or ordinal scale) and aggregate (e.g. precision@k, recall@k, or hit rate).|
-
-### 3.4 RAG answer quality
-
-| Metric | Description | Recording / calculation |
-|--------|-------------|-------------------------|
-| **Correctness** | Factual correctness of the generated answer given the retrieved context. | Manual evaluation of each answer (e.g. correct / partially correct / incorrect); optionally with a short justification. Aggregate as counts or proportions per language or per query set. |
-| **Completeness** | Whether the answer addresses all parts of the question. | Manual rating (e.g. full / partial / missing). Aggregate per language or query set. |
-| **Relevance** | Whether the answer stays on-topic and uses the provided context. | Manual rating; aggregate similarly. |
+| Metric | Description |
+|--------|-------------|
+| **Relevance (retrieval)** | Whether the retrieved documents are relevant to the query. For a defined set of queries (~20) with known relevant document(s), record which document(s) are in top-*k*; evaluate relevance manually |
+| **Completeness** | Whether the answer addresses all parts of the question. | Manual rating (e.g. full / partial / missing). |
+| **Relevance** | Whether the answer stays on-topic and uses the provided context. | Manual rating |
