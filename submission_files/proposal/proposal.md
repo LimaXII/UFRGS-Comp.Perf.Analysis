@@ -4,7 +4,7 @@
 
 **Computational object:** A **Retrieval-Augmented Generation (RAG)** system evaluated in a multilingual setting. The system comprises:
 
-- **Document base:** A fixed set of base documents in PDF format (10 documents), used as the sole knowledge source for retrieval.
+- **Document base:** A fixed set of base documents in text format (10 documents), used as the sole knowledge source for retrieval.
   
   The same **10 documents** (same content, same structure) are translated into **20 different languages** and indexed; retrieval and RAG experiments are run on this multilingual corpus so that the impact of language on embedding quality, retrieval performance, and answer quality can be compared under controlled conditions.
 - **Embedding model:** `intfloat/multilingual-e5-large`, used to encode documents and queries into a common vector space.
