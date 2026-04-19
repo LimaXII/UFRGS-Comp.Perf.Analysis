@@ -176,5 +176,3 @@ O encerramento de uma conta exige a desmobilização de recursos digitais, limpe
 ### 4. Reabertura de Conta e Quarentena
 O encerramento do vínculo gera uma "quebra de confiança" técnica no sistema de IA do banco. Por isso, o retorno não é automático.
 * **Nova Análise:** Caso um ex-cliente deseje retornar, ele passará por uma análise cadastral ainda mais rigorosa. O sistema avaliará o histórico anterior de comportamento e os motivos que levaram ao desligamento, podendo aplicar novos requisitos ou taxas de adesão para restabelecer o relacionamento.
-
----

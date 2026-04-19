@@ -55,7 +55,3 @@ __________________________________________
 <br>
 __________________________________________
 **COLABORADOR (Atesto que sei o hino e aceito o mate)**
-
------
-
-**Deseja que eu redija o Termo de Ciência de Ética e Tradição para acompanhar este contrato?**

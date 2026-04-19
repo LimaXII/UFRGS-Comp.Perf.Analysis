@@ -14,7 +14,9 @@ dependencies = [
     "ollama (>=0.6.1,<0.7.0)",
     "pandas (>=3.0.1,<4.0.0)",
     "matplotlib (>=3.10.8,<4.0.0)",
-    "faiss-cpu (>=1.13.2,<2.0.0)"
+    "faiss-cpu (>=1.13.2,<2.0.0)",
+    "openai (>=2.32.0,<3.0.0)",
+    "python-dotenv (>=1.2.2,<2.0.0)",
 ]
 
 [tool.poetry]
