@@ -1,0 +1,24 @@
+{
+  "languages": [
+    { "code": "pt_br", "name": "Português (Brasil)" },
+    { "code": "da_dk", "name": "Dinamarquês (Dinamarca)" },
+    { "code": "en_us", "name": "Inglês (Estados Unidos)" },
+    { "code": "en_gb", "name": "Inglês (Reino Unido)" },
+    { "code": "es_es", "name": "Espanhol (Espanha)" },
+    { "code": "cs_cz", "name": "Tcheco (República Tcheca)" },
+    { "code": "fr_fr", "name": "Francês (França)" },
+    { "code": "de_de", "name": "Alemão (Alemanha)" },
+    { "code": "it_it", "name": "Italiano (Itália)" },
+    { "code": "ja_jp", "name": "Japonês (Japão)" },
+    { "code": "ko_kr", "name": "Coreano (Coreia do Sul)" },
+    { "code": "zh_cn", "name": "Chinês (Simplificado - China)" },
+    { "code": "zh_tw", "name": "Chinês (Tradicional - Taiwan)" },
+    { "code": "ru_ru", "name": "Russo (Rússia)" },
+    { "code": "ar_sa", "name": "Árabe (Arábia Saudita)" },
+    { "code": "hi_in", "name": "Hindi (Índia)" },
+    { "code": "nl_nl", "name": "Holandês (Países Baixos)" },
+    { "code": "sv_se", "name": "Sueco (Suécia)" },
+    { "code": "pl_pl", "name": "Polonês (Polônia)" },
+    { "code": "tr_tr", "name": "Turco (Turquia)" }
+  ]
+}

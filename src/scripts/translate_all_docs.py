@@ -6,7 +6,7 @@ from dotenv import load_dotenv
 from openai import OpenAI
 from pathlib import Path
 
-BASE_DIR = Path("base_docs")
+BASE_DIR = Path("data/base_docs")
 
 # Using English to translate to all other languages.
 SOURCE_LANG: str = "en_us"
@@ -15,10 +15,9 @@ SOURCE_LANG: str = "en_us"
 SKIP_LANGS: dict = {"en_us"}
 
 MODEL_NAME: str = "gpt-5.1"
-
-# OpenAI
 load_dotenv()
 client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
 
 def call_openai(
     prompt: str
@@ -48,7 +47,7 @@ def call_openai(
 
 
 def translate_filename(
-    filename: str, 
+    filename: str,
     target_lang_code: str
 ) -> str:
     name: str = filename.replace(".md", "")
@@ -83,10 +82,10 @@ def translate_filename(
 
 
 def translate_content(
-    content: str, 
+    content: str,
     target_lang_name: str
 ) -> str:
-    
+
     prompt: str = f"""
         You are a deterministic translation engine.
 

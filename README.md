@@ -54,29 +54,30 @@ Documents → Translation → Embeddings → Vector DB → Query → Retrieval �
 
 ```
 
-base_docs/
-  english/
-  russian/
-  portuguese/
+data/base_docs/
+  en_us/
+  ru_ru/
+  ko_kr/
 
-embeddings/
-indexes/
-
-experiments/
-
-scripts/
-  generate_documents.py
-  translate_documents.py
-  generate_embeddings.py
-  build_index.py
-  retrieval_test.py
-  rag_agent.py
+src/
+  embeddings/
+  indexes/
+  experiments/
+  scripts/
+    generate_documents.py
+    translate_documents.py
+    generate_embeddings.py
+    build_index.py
+    retrieval_test.py
+    rag_agent.py
 
 results/
   metrics.csv
   plots/
 
 tests/
+  rag_test_pdf.py
+  test_doc.pdf
 ```
 
 ---
@@ -127,7 +128,7 @@ vector_id → language
 Create approximately:
 
 ```
-50 queries
+20 queries
 ```
 
 Each query should include:
