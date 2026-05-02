@@ -20,9 +20,9 @@
 
 ### Análise do agente (Perguntas e Respostas) - Etapa 2
 
-- [⏳] Criação do agente (system_prompt).
+- [✅] Criação do agente (system_prompt).
 - [✅] Criação das 20 perguntas em todas as 20 linguagens.
-- [⏳] Criação do pipeline para percorrer todas as perguntas e idiomas, gerando embeddings e consultando seu respectivo RAG, via busca vetorial.
+- [✅] Criação do pipeline para percorrer todas as perguntas e idiomas, gerando embeddings e consultando seu respectivo RAG, via busca vetorial.
 - [⏳] Rodar as perguntas em todos os idiomas.
 - [⏳] Salvar logs e métricas obtidas (perguntas + respostas do agente).
 - [⏳] Analisar perguntas e respostas e gerar uma análise qualitativa para cada idioma.

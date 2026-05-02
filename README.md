@@ -50,38 +50,6 @@ Documents → Translation → Embeddings → Vector DB → Query → Retrieval �
 
 ---
 
-# Project Structure
-
-```
-
-data/base_docs/
-  en_us/
-  ru_ru/
-  ko_kr/
-
-src/
-  embeddings/
-  indexes/
-  experiments/
-  scripts/
-    generate_documents.py
-    translate_documents.py
-    generate_embeddings.py
-    build_index.py
-    retrieval_test.py
-    rag_agent.py
-
-results/
-  metrics.csv
-  plots/
-
-tests/
-  rag_test_pdf.py
-  test_doc.pdf
-```
-
----
-
 # Step 1 — Generate Base Documents
 
 Create approximately:
@@ -113,13 +81,6 @@ Pipeline:
 # Step 4 — Build the Vector Index
 
 Use **FAISS** to index the embeddings.
-
-The index should store:
-
-```
-vector_id → document_id
-vector_id → language
-```
 
 ---
 
