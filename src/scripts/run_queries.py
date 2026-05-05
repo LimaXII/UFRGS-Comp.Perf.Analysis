@@ -114,6 +114,14 @@ def load_questions(
             questions.append({"query_number": int(m.group(1)), "query": m.group(2)})
     return questions
 
+def load_gold_map(
+    language_code: str
+) -> dict:
+    p = BASE_QUESTIONS_PATH / language_code / "gold.json"
+    if p.exists():
+        return json.loads(p.read_text(encoding="utf-8"))
+    return {}
+
 def load_faiss_and_metadata(
     experiment_id: int, 
     language_code: str
@@ -156,7 +164,8 @@ def format_context(
     parts = []
     for h in hits:
         parts.append(
-            f"### Hit {h['rank']} | score={h['score']:.6f} | source=[{h['filename']}]"
+            f"""### Hit {h['rank']} | score={h['score']:.6f} | source=[{h['filename']}]
+        {h['text']}"""
         )
     return "\n".join(parts)
 
@@ -237,6 +246,8 @@ def main():
                 print(f"[SKIP] {language_code}: no FAISS/metadata found in src/database/experiment_{exp_id}/{language_code}")
                 continue
 
+            gold_map = load_gold_map(language_code)
+
             lang_out = exp_out_root / language_code
             lang_out.mkdir(parents=True, exist_ok=True)
 
@@ -248,7 +259,7 @@ def main():
             if out_csv.exists():
                 out_csv.unlink()
 
-            csv_fields = [
+            csv_fields: list = [
                 "experiment_id", "language",
                 "query_number", "query",
                 "response",
@@ -260,12 +271,12 @@ def main():
                 "embedding_dtype",
                 "prefix_mode",
                 "faiss_top_k",
+                "expected_filename", "gold_found", "gold_rank",
                 "hits_json",
                 "ollama_model",
                 "ollama_meta_json",
             ]
-
-            total_times = []
+            total_times: list = []
 
             with open(out_csv, "w", encoding="utf-8", newline="") as fcsv:
                 writer = csv.DictWriter(fcsv, fieldnames=csv_fields)
@@ -311,6 +322,12 @@ def main():
                             "text": text,
                         })
 
+                    retrieved_filenames = [h["filename"] for h in hits]
+                    expected_filename = gold_map.get(str(qnum)) 
+                    gold_found = (expected_filename in retrieved_filenames) if expected_filename else None
+                    gold_rank = (next((h["rank"] for h in hits if h["filename"] == expected_filename), None)
+                    if expected_filename else None)
+
                     context = format_context(hits)
 
                     user_prompt: str = f"""CONTEXT:
@@ -355,6 +372,9 @@ def main():
                         "embedding_dtype": embedding_dtype,
                         "prefix_mode": prefix_mode,
                         "faiss_top_k": args.top_k,
+                        "expected_filename": expected_filename,
+                        "gold_found": gold_found,
+                        "gold_rank": gold_rank,
                         "hits_json": json.dumps(hits, ensure_ascii=False),
                         "ollama_model": args.ollama_model,
                         "ollama_meta_json": json.dumps(ollama_meta, ensure_ascii=False),

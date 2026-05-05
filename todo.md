@@ -14,8 +14,8 @@
 
 ### Geração dos embeddings
 
-- [⏳] Gerar embeddings e salvar bases de dados do FAISS.
-- [⏳] Salvar todas as métricas durante a geração dos embeddings.
+- [✅] Gerar embeddings e salvar bases de dados do FAISS.
+- [✅] Salvar todas as métricas durante a geração dos embeddings.
 - [⏳] Geração de gráficos, utilizando `ggplot2`.
 
 ### Análise do agente (Perguntas e Respostas) - Etapa 2
