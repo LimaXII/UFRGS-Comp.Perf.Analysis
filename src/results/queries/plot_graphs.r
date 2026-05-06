@@ -106,21 +106,23 @@ save_graph(g3, "g3_mean_retrieval_time_by_language.png")
 g4 <- df %>%
   group_by(language) %>%
   summarise(
+    total = n(),
     total_gold_false = sum(gold_found == FALSE, na.rm = TRUE),
+    error_percentage = (total_gold_false / total) * 100,
     .groups = "drop"
   ) %>%
   filter(total_gold_false > 0) %>%
   ggplot(aes(
-    x = reorder(language, total_gold_false),
-    y = total_gold_false
+    x = reorder(language, error_percentage),
+    y = error_percentage
   )) +
   geom_col(fill = "firebrick", alpha = 0.8) +
   labs(
-    title = "Quantidade de retrievals que não recuperaram o arquivo correto por idioma",
+    title = "Porcentagem de retrievals incorretos por idioma",
     subtitle = "Idiomas ausentes no gráfico recuperaram corretamente o arquivo esperado em todas as perguntas.",
     x = "Idioma",
-    y = "Quantidade"
+    y = "Porcentagem de erros (%)"
   ) +
   coord_flip()
 
-save_graph(g4, "g4_gold_false_count_by_language.png")
+save_graph(g4, "g4_gold_false_percentage_by_language.png")
