@@ -214,3 +214,5 @@ src/results/embeddings/experiment_*
 
 # Queries results experiments raw
 src/results/queries/experiment_*
+
+*.csv
