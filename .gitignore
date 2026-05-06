@@ -207,10 +207,10 @@ marimo/_lsp/
 __marimo__/
 
 # Database experiments raw 
-src/database/ex*
+src/database/experiment_*
 
 # Embeddings results experiments raw
-src/results/embeddings/ex*
+src/results/embeddings/experiment_*
 
 # Queries results experiments raw
-src/results/queries/ex*
+src/results/queries/experiment_*
