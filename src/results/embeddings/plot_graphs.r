@@ -32,7 +32,7 @@ g1 <- df %>%
   )) +
   geom_boxplot(alpha = 0.7, outlier.alpha = 0.3) +
   labs(
-    title = "Distribuição de caracteres por idioma (experimento 10)",
+    title = "Distribuição de caracteres por idioma",
     x = "Idioma",
     y = "Número de caracteres"
   ) +
@@ -52,7 +52,7 @@ g2 <- df %>%
   ggplot(aes(x = reorder(language, file_chars), y = file_chars)) +
   geom_col(fill = "steelblue", alpha = 0.8) +
   labs(
-    title = "Maior número de caracteres por idioma (diretrizes.md, experimento 10)",
+    title = "Maior número de caracteres por idioma (diretrizes.md)",
     x = "Idioma",
     y = "Número de caracteres"
   ) +
