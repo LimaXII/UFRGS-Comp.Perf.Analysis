@@ -5,6 +5,10 @@
 # Then, run the following command: ollama pull qwen2.5:7b
 # You can test the model, running: ollama run qwen2.5:7b
 
+# To resume execution from a specific experiment ID:
+# poetry run python src/scripts/run_queries.py --experiments all --start_experiment 57
+# The --start_experiment parameter skips all experiments with IDs lower than the specified value.
+
 import os
 import re
 import csv
@@ -36,6 +40,11 @@ TOP_K: int = 6
 CONTEXT_CHAR_LIMIT: int = 2000
 OLLAMA_TEMPERATURE: float = 0.2
 
+EMBEDDING_MODEL = "intfloat/multilingual-e5-large"
+DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
+NORMALIZE_EMBEDDINGS = True
+PREFIX_MODE = "e5"
+
 SYSTEM_PROMPT: str = """
     You are a retrieval-augmented assistant.
 
@@ -56,7 +65,7 @@ def get_system_usage(
     metrics: dict = {
         "rss_mb": process.memory_info().rss / (1024 ** 2),
         "vms_mb": process.memory_info().vms / (1024 ** 2),
-        "cpu_percent": psutil.cpu_percent(interval=0.1),
+        "cpu_percent": psutil.cpu_percent(interval=None),
     }
 
     if device == "cuda" and torch.cuda.is_available():
@@ -71,14 +80,17 @@ def load_experiments(
     csv_path: Path
 ) -> list[dict]:
     experiments: list = []
+
     with open(csv_path, "r", encoding="utf-8") as f:
         reader = csv.DictReader(f)
+
         for row in reader:
             row["experiment_id"] = int(row["experiment_id"])
             row["batch_size"] = int(row["batch_size"])
-            row["normalize_embeddings"] = (row["normalize_embeddings"].lower() == "true")
             row["chunk_size"] = int(row["chunk_size"])
+
             experiments.append(row)
+
     return experiments
 
 def find_single_md_file(
@@ -196,35 +208,46 @@ def main():
                         help="Ex: 'all' ou '1,2,3'")
     parser.add_argument("--ollama_model", type=str, default=DEFAULT_OLLAMA_MODEL)
     parser.add_argument("--top_k", type=int, default=TOP_K)
+    parser.add_argument(
+        "--start_experiment",
+        type=int,
+        default=1,
+        help="Experiment ID from which execution should start"
+    )
     args = parser.parse_args()
 
     RESULTS_QUERIES_PATH.mkdir(parents=True, exist_ok=True)
 
     experiments = load_experiments(EXPERIMENTS_CSV)
+
     if args.experiments != "all":
         wanted = {int(x.strip()) for x in args.experiments.split(",") if x.strip()}
         experiments = [e for e in experiments if e["experiment_id"] in wanted]
 
+    experiments = [
+        e for e in experiments
+        if e["experiment_id"] >= args.start_experiment
+    ]
+
     language_folders = sorted([p for p in BASE_QUESTIONS_PATH.iterdir() if p.is_dir()])
+
+    encoder = SentenceTransformer(
+        EMBEDDING_MODEL,
+        device=DEVICE
+    )
 
     for exp in experiments:
         exp_id = exp["experiment_id"]
-        model_name = exp["model_name"]
         batch_size = exp["batch_size"]
-        normalize_embeddings = exp["normalize_embeddings"]
-        device = exp["device"]
+        normalize_embeddings = NORMALIZE_EMBEDDINGS
+        device = DEVICE
+        prefix_mode = PREFIX_MODE
         embedding_dtype = exp["embedding_dtype"]
-        prefix_mode = exp["prefix_mode"]
 
         print(f"\n============================")
         print(f"Experiment {exp_id}")
-        print(f"  emb_model={model_name}")
-        print(f"  device={device} | batch={batch_size} | norm={normalize_embeddings}")
-        print(f"  embedding_dtype={embedding_dtype} | prefix_mode={prefix_mode}")
         print(f"  ollama_model={args.ollama_model} | top_k={args.top_k}")
         print(f"============================")
-
-        encoder = SentenceTransformer(model_name, device=device)
 
         exp_out_root = RESULTS_QUERIES_PATH / f"experiment_{exp_id}"
         exp_out_root.mkdir(parents=True, exist_ok=True)
@@ -294,7 +317,7 @@ def main():
                     q_text = prefix_query(query, prefix_mode)
                     q_emb = encoder.encode(
                         [q_text],
-                        batch_size=1,
+                        batch_size=batch_size,
                         normalize_embeddings=normalize_embeddings,
                         convert_to_numpy=True,
                         show_progress_bar=False,
@@ -367,10 +390,10 @@ def main():
                         "start_rss_mb": start_mem.get("rss_mb"),
                         "end_rss_mb": end_mem.get("rss_mb"),
                         "device": device,
-                        "embedding_model": model_name,
-                        "normalize_embeddings": normalize_embeddings,
+                        "embedding_model": EMBEDDING_MODEL,
+                        "normalize_embeddings": NORMALIZE_EMBEDDINGS,
                         "embedding_dtype": embedding_dtype,
-                        "prefix_mode": prefix_mode,
+                        "prefix_mode": PREFIX_MODE,
                         "faiss_top_k": args.top_k,
                         "expected_filename": expected_filename,
                         "gold_found": gold_found,
