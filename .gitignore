@@ -216,3 +216,4 @@ src/results/embeddings/experiment_*
 src/results/queries/experiment_*
 
 *.csv
+*experiments_summary.csv

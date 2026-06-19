@@ -36,12 +36,12 @@ def load_chunk_sizes():
 
 
 def main():
-    csv_files = sorted(QUERIES_DIR.glob("experiment_*/*/results.csv"))
+    csv_files = sorted(QUERIES_DIR.glob("experiment_*/*/*/results.csv"))
 
     if not csv_files:
         print(
             f"Nenhum results.csv encontrado em "
-            f"{QUERIES_DIR}/experiment_*/*/results.csv",
+            f"{QUERIES_DIR}/experiment_*/*/*/results.csv",
             file=sys.stderr
         )
         sys.exit(1)
@@ -88,8 +88,9 @@ def main():
         writer.writeheader()
 
         for f in csv_files:
-            exp_dir = f.parent.parent.name
             lang_dir = f.parent.name
+            replication_dir = f.parent.parent.name
+            exp_dir = f.parent.parent.parent.name
 
             chunk_size = chunk_sizes.get(exp_dir, "")
 
@@ -102,6 +103,7 @@ def main():
 
                     row["chunk_size"] = chunk_size
                     row["source_experiment_dir"] = exp_dir
+                    row["source_replication_dir"] = replication_dir
                     row["source_language_dir"] = lang_dir
                     row["source_csv_path"] = str(f)
 
