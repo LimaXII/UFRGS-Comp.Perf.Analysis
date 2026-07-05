@@ -1,0 +1,313 @@
+\documentclass[aspectratio=169]{beamer}
+\usetheme{Madrid}
+
+% --- Configuração da Paleta de Cores (Vermelho, Preto e Branco) ---
+\definecolor{TemaVermelho}{RGB}{178, 34, 34} % Firebrick / Vermelho Escuro
+\definecolor{TemaPreto}{RGB}{40, 40, 40}     % Preto Suave
+
+% Barras inferiores e superiores
+\setbeamercolor{palette primary}{bg=TemaVermelho, fg=white}
+\setbeamercolor{palette secondary}{bg=TemaPreto, fg=white}
+\setbeamercolor{palette tertiary}{bg=black, fg=white}
+\setbeamercolor{palette quaternary}{bg=black, fg=white}
+
+% Estrutura (Títulos, Bullets, Enumerate)
+\setbeamercolor{structure}{fg=TemaVermelho}
+\setbeamercolor{title}{bg=TemaVermelho, fg=white}
+\setbeamercolor{frametitle}{bg=TemaVermelho, fg=white}
+
+% Fundo e Texto
+\setbeamercolor{background canvas}{bg=white}
+\setbeamercolor{normal text}{fg=black}
+
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{graphicx}
+
+\setbeamertemplate{navigation symbols}{}
+
+% --- Informações da Capa ---
+\title[Desempenho RAG Multilíngue]{Análise de Desempenho de RAG Multilíngue}
+\subtitle{Relatório Final de Pesquisa}
+\author{Luccas da Silva Lima}
+\institute[UFRGS]{Universidade Federal do Rio Grande do Sul \and luccas.lima@ufrgs.br}
+\date{2026}
+
+\begin{document}
+
+% --- CAPA ---
+\begin{frame}
+    \titlepage
+\end{frame}
+
+% --- INTRODUÇÃO ---
+\begin{frame}{Introdução e Objetivos}
+    \textbf{O Desafio:}
+    \begin{itemize}
+        \item Entender como a escolha do idioma pode impactar a qualidade de um sistema RAG.
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    \textbf{Objetivo do Estudo:}
+    Descobrir qual ou quais linguagens são mais eficientes para a construção de um sistema RAG.
+\end{frame}
+
+% --- 2.1 REPRODUTIBILIDADE ---
+\begin{frame}{2.1 Reprodutibilidade}
+    \textbf{Fluxo de Desenvolvimento e Gestão:}
+    \begin{itemize}
+        \item \textbf{Linguagem Base:} Python.
+        \item \textbf{Controle de Versão:} GitHub, com \texttt{READMEs} detalhando o escopo e a ordem de execução dos scripts.
+        \item \textbf{Gestão de Dependências:} Isolamento de ambiente e consistência de bibliotecas garantidos via \texttt{Poetry}.
+        \item \textbf{Garantia:} Total rastreabilidade e replicação fiel do ambiente de experimentos.
+    \end{itemize}
+\end{frame}
+
+% --- 2.2 AMBIENTE DE EXECUÇÃO ---
+\begin{frame}{2.2 Ambiente de Execução}
+    \textbf{Infraestrutura Local:}
+    \begin{itemize}
+        \item \textbf{CPU:} Intel Core i5-12400F
+        \item \textbf{GPU:} NVIDIA GeForce RTX 4060 (8 GB VRAM)
+        \item \textbf{RAM \& Disco:} 32 GB | SSD Kingston NVMe 1 TB
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \textbf{Processamento Externo (Tradução):}
+    \begin{itemize}
+        \item Requisições via API da OpenAI (LLM \texttt{gpt-5.1}) devido às elevadas exigências computacionais da etapa de tradução.
+    \end{itemize}
+\end{frame}
+
+% --- 2.3 DOCUMENTOS E TRADUÇÃO ---
+\begin{frame}{2.3 Criação dos Documentos Originais e Tradução}
+    \textbf{Geração do Corpus Base:}
+    \begin{itemize}
+        \item Criação de 10 documentos de referência formatados em Markdown, originalmente em Inglês (\texttt{en\_us}).
+    \end{itemize}
+    
+    \vspace{0.3cm}
+    \textbf{Processo de Tradução:}
+    \begin{itemize}
+        \item Expansão linguística conduzida por um LLM operando em modo \textit{zero-shot}.
+        \item Aplicação de restrições no prompt para garantir a preservação estrita da formatação.
+        \item Prevenção contra sumarizações automáticas ou perda de numeração de linhas, garantindo paridade semântica.
+    \end{itemize}
+\end{frame}
+
+% --- 2.3.1 IDIOMAS AVALIADOS ---
+\begin{frame}{2.3.1 Idiomas Avaliados}
+    \textbf{Escopo Multilíngue (20 Idiomas):}
+    \vspace{0.2cm}
+    
+    \begin{columns}[T]
+        \begin{column}{0.5\textwidth}
+            \small
+            \begin{itemize}
+                \item \texttt{ar\_sa}: Árabe (Arábia Saudita)
+                \item \texttt{cs\_cz}: Tcheco (República Tcheca)
+                \item \texttt{da\_dk}: Dinamarquês (Dinamarca)
+                \item \texttt{de\_de}: Alemão (Alemanha)
+                \item \texttt{en\_gb}: Inglês (Reino Unido)
+                \item \texttt{en\_us}: Inglês (Estados Unidos)
+                \item \texttt{es\_es}: Espanhol (Espanha)
+                \item \texttt{fr\_fr}: Francês (França)
+                \item \texttt{hi\_in}: Hindi (Índia)
+                \item \texttt{it\_it}: Italiano (Itália)
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \small
+            \begin{itemize}
+                \item \texttt{ja\_jp}: Japonês (Japão)
+                \item \texttt{ko\_kr}: Coreano (Coreia do Sul)
+                \item \texttt{nl\_nl}: Holandês (Países Baixos)
+                \item \texttt{pl\_pl}: Polonês (Polônia)
+                \item \texttt{pt\_br}: Português (Brasil)
+                \item \texttt{ru\_ru}: Russo (Rússia)
+                \item \texttt{sv\_se}: Sueco (Suécia)
+                \item \texttt{tr\_tr}: Turco (Turquia)
+                \item \texttt{zh\_cn}: Chinês (Simplificado)
+                \item \texttt{zh\_tw}: Chinês (Tradicional)
+            \end{itemize}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% --- 2.3.2 IMPACTO DA VERBOSIDADE ---
+\begin{frame}{2.3.2 O Impacto da Verbosidade}
+    \begin{columns}
+        \begin{column}{0.4\textwidth}
+            \textbf{A Variabilidade Inerente:}
+            \begin{itemize}
+                \item Mesmo mantendo o exato mesmo significado e formatação, a estrutura de cada língua muda drasticamente o tamanho do arquivo final.
+                \item Idiomas mais expansivos resultaram em contagens de caracteres muito superiores ao original em inglês.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.6\textwidth}
+            \centering
+            \includegraphics[width=\linewidth,height=0.7\textheight,keepaspectratio]{src/results/graphs/g1_character_dispersion.png}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% --- 2.4 DoE ---
+\begin{frame}{2.4 Design de Experimentos (DoE)}
+    \textbf{Abordagem Fatorial Completo (\textit{Full Factorial}):}
+    \vspace{0.2cm}
+    
+    \begin{table}
+        \centering
+        \small
+        \begin{tabular}{ll}
+        \hline
+        \textbf{Variável Controlada} & \textbf{Níveis} \\ \hline
+        Tamanho do Lote (\textit{Batch Size}) & 7 configurações \\
+        Tamanho do Fragmento (\textit{Chunk Size}) & 7 configurações \\
+        Precisão Numérica (\textit{Precision}) & \texttt{float32} e \texttt{float16} \\
+        Métrica de Distância (FAISS) & L2 e \textit{Inner Product} \\ \hline
+        \end{tabular}
+    \end{table}
+
+    \vspace{0.2cm}
+    \begin{itemize}
+        \item \textbf{Cobertura:} 20 idiomas avaliados em 10 replicações.
+        \item \textbf{Volume de Dados:} 39.200 configurações totais durante a geração das bases de dados.
+        \item \textbf{Processamento Exclusivo (CUDA):} A variável \textit{device} (CPU vs. GPU) foi removida do escopo. A execução combinatória do Fatorial Completo em CPU tornaria o tempo de experimento impraticável.
+    \end{itemize}
+\end{frame}
+
+% --- 2.5 ARMAZENAMENTO POR IDIOMA ---
+\begin{frame}{2.5 Tamanho do Banco de Dados por Idioma}
+    \begin{columns}
+        \begin{column}{0.4\textwidth}
+            \textbf{O Custo da Verbosidade:}
+            \begin{itemize}
+                \item Variação na quantidade de caracteres impacta diretamente o armazenamento.
+                \item O custo em disco do índice vetorial cresce proporcionalmente à verbosidade da língua analisada.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.6\textwidth}
+            \centering
+            \includegraphics[width=\linewidth,height=0.7\textheight,keepaspectratio]{src/results/graphs/g3_storage_size_all.png}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% --- 2.6 TEMPO DE EMBEDDING ---
+\begin{frame}{2.6 Tempo de Embedding por Idioma}
+    \begin{columns}
+        \begin{column}{0.5\textwidth}
+            \centering
+            \textbf{Tempo Absoluto por Idioma}\\
+            \vspace{0.1cm}
+            \includegraphics[width=\linewidth,height=0.6\textheight,keepaspectratio]{src/results/graphs/g4_embedding_time_by_language_all.png}
+        \end{column}
+        \begin{column}{0.5\textwidth}
+            \centering
+            \textbf{Correlação: Tempo vs. Caracteres}\\
+            \vspace{0.1cm}
+            \includegraphics[width=\linewidth,height=0.6\textheight,keepaspectratio]{src/results/graphs/embedding_time_vs_file_chars_model.png}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% --- 2.7 CHUNK SIZE VS ARMAZENAMENTO ---
+\begin{frame}{2.7 Tamanho do Fragmento vs. Armazenamento Total}
+    \begin{columns}
+        \begin{column}{0.4\textwidth}
+            \textbf{Equilíbrio Contextual:}
+            \begin{itemize}
+                \item Fragmentos (\textit{chunks}) menores geram mais vetores densos.
+                \item Independentemente do idioma, o aumento de metadados de fragmentos menores aumenta também o armazenamento total.
+            \end{itemize}
+        \end{column}
+        \begin{column}{0.6\textwidth}
+            \centering
+            \includegraphics[width=\linewidth,height=0.7\textheight,keepaspectratio]{src/results/graphs/g5_avg_chars_vs_storage.png}
+        \end{column}
+    \end{columns}
+\end{frame}
+
+% --- 2.8 ESTRUTURA DAS CONSULTAS ---
+\begin{frame}{2.8 Estrutura das Consultas (\textit{Queries})}
+    \textbf{Elaboração e Mapeamento \textit{Gold Standard}:}
+    \begin{itemize}
+        \item Foram criadas 20 perguntas, traduzidas seguindo a mesma metodologia do corpus de base.
+        \item Cada documento da base contém a resposta direta para exatamente 2 dessas perguntas.
+        \item Isso estabelece um \textit{Gold Standard} determinístico: para cada pergunta, existe \textbf{uma única resposta certa} a ser encontrada no índice.
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \textbf{Expansão Volumétrica dos Dados:}
+    \begin{itemize}
+        \item A matriz do DoE resultou em 39.200 bancos de dados gerados.
+        \item Ao cruzar esse cenário com as 20 consultas, o arquivo \textit{CSV} resultante atingiu a marca de \textbf{784.000 instâncias de avaliação}.
+    \end{itemize}
+\end{frame}
+
+% --- 2.9 FOCO NO RETRIEVAL ---
+\begin{frame}{2.9 Foco no \textit{Retrieval} e Custo Computacional}
+    \textbf{Simplificação Arquitetural:}
+    \begin{itemize}
+        \item Inicialmente, havia um agente LLM projetado para formular a resposta final baseada nos documentos recuperados. Este passo foi removido. O escopo da pesquisa foca estritamente na qualidade do \textbf{modelo de \textit{embeddings}} e na busca semântica. Adicionar a geração final não traria novos dados métricos, apenas aumentaria o tempo de execução dos experimentos.
+    \end{itemize}
+
+    \vspace{0.3cm}
+    \textbf{Avaliação Exclusiva e Tempo de Execução:}
+    \begin{itemize}
+        \item O pipeline avaliou exclusivamente a etapa de \textbf{\textit{Retrieval}} (capacidade de encontrar o documento correto no Top-K).
+        \item Mesmo com essa otimização arquitetural, o processamento e a avaliação dessas 784.000 consultas exigiu cerca de \textbf{70 horas} de execução.
+    \end{itemize}
+\end{frame}
+
+% --- 2.10 CONSULTAS PARTE 1 (PIORES POSIÇÕES) ---
+\begin{frame}{2.10 Resultados das Consultas (Parte 1: Piores Posições)}
+    \centering
+    \textbf{Idiomas com as Piores Posições no Ranking}\\
+    \vspace{0.3cm}
+    \includegraphics[width=0.9\textwidth,height=0.65\textheight,keepaspectratio]{src/results/graphs/g6_worst_gold_rank_languages_all_experiments.png}
+\end{frame}
+
+% --- 2.10 CONSULTAS PARTE 2 (MELHORES POSIÇÕES) ---
+\begin{frame}{2.10 Resultados das Consultas (Parte 2: Melhores Posições)}
+    \centering
+    \textbf{Idiomas com as Melhores Posições no Ranking}\\
+    \vspace{0.3cm}
+    \includegraphics[width=0.9\textwidth,height=0.65\textheight,keepaspectratio]{src/results/graphs/g7_best_gold_rank_languages_all_experiments.png}
+\end{frame}
+
+% --- 2.10 CONSULTAS PARTE 3 (TEMPO MÉDIO DE RETRIEVAL) ---
+\begin{frame}{2.10 Resultados das Consultas (Parte 3: Tempo de Retrieval)}
+    \centering
+    \textbf{Tempo Médio de Recuperação por Idioma}\\
+    \vspace{0.3cm}
+    \includegraphics[width=0.9\textwidth,height=0.65\textheight,keepaspectratio]{src/results/graphs/g8_mean_retrieval_time_by_language_all_experiments.png}
+\end{frame}
+
+% --- 2.10 CONSULTAS PARTE 4 (FALHAS) ---
+\begin{frame}{2.10 Resultados das Consultas (Parte 4: Falhas na Recuperação)}
+    \centering
+    \textbf{Percentual de Falhas Absolutas (Gold False)}\\
+    \vspace{0.3cm}
+    \includegraphics[width=0.9\textwidth,height=0.65\textheight,keepaspectratio]{src/results/graphs/g9_gold_false_percentage_by_language_all_experiments.png}
+\end{frame}
+
+% --- DISCUSSÃO E CONCLUSÕES ---
+\begin{frame}{Discussão e Conclusões}
+    \textbf{Conclusões Principais:}
+    \begin{enumerate}
+        \item \textbf{A língua dita a eficiência:} A verbosidade afeta diretamente o armazenamento em disco e a latência de geração de \textit{embeddings}.
+        \item \textbf{Viés do Modelo Base:} Observa-se uma disparidade de desempenho em favor do idioma inglês e francês, o que pode refletir de uma maior densidade de dados de treinamento nesses idiomas no modelo multilingue.
+        \item \textbf{Falhas em Línguas Complexas:} Idiomas como \texttt{sv\_se} (Sueco) e \texttt{zh\_tw} (Chinês Tradicional) apresentaram falhas críticas na etapa de \textit{retrieval}.
+    \end{enumerate}
+
+    \vspace{0.3cm}
+    \textbf{Trabalhos Futuros:}
+    \begin{itemize}
+        \item Investigar \textit{fine-tuning} para o modelo de \textit{embeddings} com o objetivo de melhorar o desempenho em idiomas de menor performance.
+        \item Testar outro modelos de \textit{embeddings} multilingues para avaliar se o viés observado é específico do modelo atual ou uma tendência geral.
+    \end{itemize}
+\end{frame}
+
+\end{document}
